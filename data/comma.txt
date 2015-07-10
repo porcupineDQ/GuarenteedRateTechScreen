@@ -1,0 +1,3 @@
+Joe,Rats,Male,Blue,1950-Jan-02
+Anne,Spoon,Female,Red,1980-Feb-05
+Jack,Knife,Male,Pink,2000-Sep-20

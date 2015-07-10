@@ -1,0 +1,3 @@
+Bob|Smith|Male|Blue|1950-Jan-02
+Jane|Adams|Female|Red|1980-Feb-05
+John|Doe|Male|Pink|2000-Sep-20
