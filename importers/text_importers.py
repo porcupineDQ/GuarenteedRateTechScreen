@@ -1,6 +1,7 @@
 __author__ = 'dqin2'
 
 import logging
+import datetime
 
 import models
 
@@ -18,7 +19,22 @@ class DelimtedTextImporter(object):
         """
 
         try:
-            return [models.Person(*line.split(self._delimiter)) for line in data]
+            results = []
+            for line in data:
+                f_name, l_name, gender, color, dob = line.strip().split(self._delimiter)
+                try:
+                    dob = datetime.datetime.strptime(dob, '%Y-%b-%d').date()
+                except:
+                    print "(%s)" % dob
+                    raise
+
+                results.append(models.Person(first_name=f_name,
+                                             last_name=l_name,
+                                             gender=gender,
+                                             favorite_color=color,
+                                             date_of_birth=dob))
+
+            return results
         except ValueError, ex:
             logging.exception(ex)
             raise ValueError('Invalid input data')

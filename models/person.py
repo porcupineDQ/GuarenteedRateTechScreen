@@ -1,49 +1,24 @@
 __author__ = 'dqin2'
 
-from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Date
+
+Base = declarative_base()
 
 
-class Person(object):
+class Person(Base):
     """
     Person data type
     """
+    __tablename__ = 'people'
 
-    def __init__(self, first_name, last_name, gender, favorite_color, date_of_birth):
-        """
-        Constructor
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    gender = Column(String)
+    favorite_color = Column(String)
+    date_of_birth = Column(Date)
 
-        :param first_name: str
-        :param last_name: str
-        :param gender: str
-        :param favorite_color: str
-        :param date_of_birth: str (YYYY-MMM-DD, i.e. 2010-Jan-01) or datetime.date
-        :return: None
-        """
-        self._first_name = first_name
-        self._last_name = last_name
-        self._gender = gender
-        self._favorite_color = favorite_color
-        if isinstance(date_of_birth, str):
-            self._date_of_birth = datetime.strptime(date_of_birth, '%Y-%b-%d').date()
-        else:
-            self._date_of_birth = date_of_birth
-
-    @property
-    def first_name(self):
-        return self._first_name
-
-    @property
-    def last_name(self):
-        return self._last_name
-
-    @property
-    def gender(self):
-        return self._gender
-
-    @property
-    def favorite_color(self):
-        return self._favorite_color
-
-    @property
-    def date_of_birth(self):
-        return self._date_of_birth
+    def __repr__(self):
+        return '<Person ID="%s", First Name="%s", Last Name="%s", Gender="%s", Favorite Color="%s", Date of Birth="%s"' \
+               % (self.id, self.first_name, self.last_name, self.gender, self.favorite_color, self.date_of_birth)
