@@ -3,7 +3,6 @@ __author__ = 'dqin2'
 import logging
 
 import sqlalchemy
-
 from sqlalchemy.orm import sessionmaker
 
 from models import Person
@@ -25,6 +24,12 @@ class Directory(object):
         # initialize data tables
         Person.metadata.create_all(self._db_engine)
         self._sessionmaker = sessionmaker(bind=self._db_engine)
+
+    def load_single(self, delimiter, value):
+        session = self.get_session()
+        result = DelimtedTextImporter(delimiter).parse([value])
+        session.add_all(result)
+        session.commit()
 
     def get_session(self):
         return self._sessionmaker()
@@ -52,11 +57,31 @@ class Directory(object):
             logging.exception(ex)
             raise ex
 
+    def report_data(self, order_by=[]):
+        """
+        Returns all results using an order by as passed in
+
+        :param order_by: list of columns with sort type e.g. [('gender','ASC'), ('date_of_birth','DESC')]
+        :return: Ordered list of data
+        """
+        if not order_by:
+            return self.get_session().query(Person).all()
+        else:
+            return self.get_session().query(Person).order_by(
+                *[getattr(getattr(Person, attrib), 'desc' if order == 'DESC' else 'asc')()
+                  for attrib, order in order_by if hasattr(Person, attrib)]
+            ).all()
+
     def report1_data(self):
-        return self.get_session().query(Person).order_by(Person.gender, Person.last_name).all()
+        return self.report_data(order_by=[('gender', 'ASC'), ('last_name', 'ASC')])
 
     def report2_data(self):
-        return self.get_session().query(Person).order_by(Person.date_of_birth).all()
+        return self.report_data(order_by=[('date_of_birth', 'ASC')])
 
     def report3_data(self):
-        return self.get_session().query(Person).order_by(Person.last_name.desc()).all()
+        return self.report_data(order_by=[('last_name', 'DESC')])
+
+
+if __name__ == '__main__':
+    d = Directory()
+    d.load_single(',', 'Foo,Bar,Male,Pink,2000-Sep-20')

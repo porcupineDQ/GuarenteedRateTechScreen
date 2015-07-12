@@ -22,3 +22,12 @@ class Person(Base):
     def __repr__(self):
         return '<Person ID="%s", First Name="%s", Last Name="%s", Gender="%s", Favorite Color="%s", Date of Birth="%s"' \
                % (self.id, self.first_name, self.last_name, self.gender, self.favorite_color, self.date_of_birth)
+
+    def to_dict(self):
+        return {
+            'First Name': self.first_name,
+            'Last Name': self.last_name,
+            'Gender': self.gender,
+            'Favorite Color': self.favorite_color,
+            'Date of Birth': self.date_of_birth.isoformat()
+        }
