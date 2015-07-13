@@ -14,12 +14,8 @@ class Directory(object):
     Data storage for report, utilizes memory db
     """
 
-    DATA_FILES = ['data/commas.txt',
-                  'data/pipe.txt',
-                  'data/space.txt']
-
-    def __init__(self):
-        self._db_engine = sqlalchemy.create_engine('sqlite:///:memory:', echo=True)
+    def __init__(self, verbose=False):
+        self._db_engine = sqlalchemy.create_engine('sqlite:///:memory:', echo=verbose)
 
         # initialize data tables
         Person.metadata.create_all(self._db_engine)
@@ -36,7 +32,7 @@ class Directory(object):
 
     def load_sample_data(self):
         """
-        loads data for sample report
+        loads data for sample report, TODO, move this function elsewhere, to a bootstrap class or something
 
         :return:
         """
@@ -57,7 +53,7 @@ class Directory(object):
             logging.exception(ex)
             raise ex
 
-    def report_data(self, order_by=[]):
+    def report_data(self, order_by=None):
         """
         Returns all results using an order by as passed in
 

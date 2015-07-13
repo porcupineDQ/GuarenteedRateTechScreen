@@ -10,7 +10,7 @@ report = None
 
 def initialize_state():
     """
-    For use with sqlite in memory db, sqlite in memory is not thread-safe
+    HACK! For use with sqlite in memory db, sqlite in memory is not thread-safe, use a different db type next time
     :return:
     """
 

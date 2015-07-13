@@ -8,7 +8,7 @@ import mock
 import importers.text_importers
 
 
-class DelimtedTextImporter(unittest.TestCase):
+class TestDelimtedTextImporter(unittest.TestCase):
     def setUp(self):
         self.data = ['Bob|Smith|Male|Blue|1980-Jan-01']
 
